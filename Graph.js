@@ -20,6 +20,11 @@ class Graph {
         this.edges.push(nedge);
         return nedge;
     }
+    adjacencyList(){
+        let list = this.list;
+        adjacency.forEach(e => list += "->" e.destiny.key);
+        
+    }
 
 }
 export default Graph;

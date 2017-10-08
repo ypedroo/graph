@@ -1,6 +1,12 @@
 class Vertex {
-    constructor(key) {
+    constructor(key, adjacency = []) {
         this.key = key;
+        this.adjacency = adjacency;
+    }
+    adjacencyList() {
+        adjacency.forEach(
+            e => list += "->" e.destiny.key);
+        console.log(list);
     }
 }
 
