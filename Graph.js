@@ -20,11 +20,11 @@ class Graph {
         this.edges.push(nedge);
         return nedge;
     }
-    adjacencyList(){
-        let list = this.list;
-        adjacency.forEach(e => list += "->" e.destiny.key);
-        
+    adjancencyList(verterxes) {
+        let adjancency =[];
+        for (let j = 0; j < verterxes.length; j++) {
+            adjancency.push(verterxes[j]);
+        }
     }
-
 }
 export default Graph;
