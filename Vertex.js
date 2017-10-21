@@ -1,5 +1,5 @@
 class Vertex {
-    constructor(key, viseted, adjacency = []) {
+    constructor(key, viseted = false, adjacency = []) {
         this.key = key;
         this.viseted = viseted;
         this.adjacency = adjacency;

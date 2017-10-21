@@ -5,6 +5,9 @@ class Edge {
         this.weight = weight;
         this.status = status;
     }
+    adjacencyList() {
+        this.vertexes.forEach(v => v.adjacencyList());
+    }
 
 }
 

@@ -8,6 +8,24 @@ class Graph {
         this.verterxes = verterxes;
         this.edges = edges;
     }
+
+    dfs(Vertex) {
+        var v = new Graph;
+        v.adjacencyList();
+        v.verterxes.visited = true;
+        v.forEach(edges);
+        if (v.edges.status = "UNEXPLORED") {
+            if (v.edges.destiny = "UNEXPLORED") {
+                v.edges.status = "EXPLORED";
+                v.edges.destiny.dfs();
+            } else {
+                v.edges.status = "return"
+            }
+
+        }
+    }
+
+
     addVertex(key) {
         let nvertex = new Vertex(key);
         this.verterxes.push(nvertex);
@@ -24,6 +42,7 @@ class Graph {
         this.verterxes.forEach(
             v => list += " ->" + v.destiny.key);
     }
-}
 
+
+}
 export default Graph;
