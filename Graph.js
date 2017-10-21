@@ -10,19 +10,21 @@ class Graph {
     }
 
     dfs(Vertex) {
-        var v = new Graph;
-        v.adjacencyList();
+        let v;
+        this.v = Vertex;
         v.verterxes.visited = true;
-        v.forEach(edges);
-        if (v.edges.status = "UNEXPLORED") {
-            if (v.edges.destiny = "UNEXPLORED") {
-                v.edges.status = "EXPLORED";
-                v.edges.destiny.dfs();
-            } else {
-                v.edges.status = "return"
-            }
+        v.edges.forEach(v.adjacencyList()); {
+            if (v.edges.status = "UNEXPLORED") {
+                if (v.edges.destiny = "UNEXPLORED") {
+                    v.edges.status = "EXPLORED";
+                    v.edges.destiny.dfs();
+                } else {
+                    v.edges.status = "return"
+                }
 
+            }
         }
+
     }
 
 
