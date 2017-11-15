@@ -6,17 +6,38 @@ class Graph {
         this.edges = edges;
     }
 
+    bfSearch(vertex) {
+        let current = null;
+        vertex.level = 0;
+        let queue = [];
+        queue.push(vertex);
+        while (queue.length > 0) {
+            current = queue.shift();
+            while (current.adjacency.forEach(e => {
+                if (e.status == "UNEXPLORED") {
+                    e.status = "DISCOVER";
+                    current.level = e.destiny.level + 1;
+                    queue.push(e.destiny);
+
+                } else {
+                    e.status = "CRUSADE";
+                }
+            }));
+        }
+        console.log(current);
+    }
+
     dfs(vertex) {
         let v;
         this.v = vertex;
         v.vertex.visited = true;
         //estrturar cria variavel percursso e dps da seta condicao
-        vertex.ajacency.forEach(edge =>  {
-            if(edge.status == "UNEXPLORED"){
-                if(edge.destiny.viseted == false){
-                    edge.status = "DISCOVERED";
+        vertex.ajacency.forEach(edge => {
+            if (edge.status == "UNEXPLORED") {
+                if (edge.destiny.viseted == false) {
+                    edge.status = "DISCOVER";
                     dfs(edge.destiny);
-                } else{
+                } else {
                     edge.status = "RETURN";
                 }
             }
@@ -36,9 +57,9 @@ class Graph {
         let nedge = new Edge(origin, destiny);
         this.edges.push(nedge);
         origin.adjacency.push(nedge);
-        
+
         //cria o destiny quando nao e direcional, ja que a lista fica espelhada
-        let nedge2 =new Edge (origin, destiny);
+        let nedge2 = new Edge(origin, destiny);
         destiny.adjacency.push(nedge2);
         return nedge;
     }
@@ -48,9 +69,10 @@ class Graph {
 }
 
 class Vertex {
-    constructor(key, viseted = false, adjacency = []) {
+    constructor(key, viseted = false, level = null, adjacency = []) {
         this.key = key;
         this.viseted = viseted;
+        this.level = level;
         this.adjacency = adjacency;
     }
 
@@ -73,7 +95,7 @@ class Edge {
         this.weight = weight;
         this.status = status;
     }
-   
+
 }
 
 let graph = new Graph();
@@ -88,17 +110,6 @@ let a3 = graph.addEdge(v3, v3);
 let a4 = graph.addEdge(v3, v4);
 //let a5 = graph.addEdge(v5, v3);
 
-graph.adjacencyList();
+//graph.adjacencyList();
 
-
-
-
-/*if (v.edges.status = "UNEXPLORED") {
-                if (v.edges.destiny = "UNEXPLORED") {
-                    v.edges.status = "EXPLORED";
-                    v.edges.destiny.dfs();
-                } else {
-                    v.edges.status = "return"
-                }
-
-            }*/
+graph.bfSearch(v1);
