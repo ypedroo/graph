@@ -7,24 +7,27 @@ class Graph {
     }
 
     bfSearch(vertex) {
-        let current = null;
+        let current = vertex;
         vertex.level = 0;
         let queue = [];
         queue.push(vertex);
         while (queue.length > 0) {
             current = queue.shift();
-            while (current.adjacency.forEach(e => {
-                if (e.status == "UNEXPLORED") {
-                    e.status = "DISCOVER";
-                    current.level = e.destiny.level + 1;
-                    queue.push(e.destiny);
+            //tres iguais por que verifica tipo e valor
+            current.adjacency.forEach(edge => {
+                if (edge.isUnexplored()) {
+                    if (!edge.hasDestinyVertexBeenVisited()) {
+                        edge.status = "DISCOVERED";
+                        edge.destiny.level = edge.origin.level + 1;
+                        //current.level = edge.destiny.level + 1;
+                        queue.push(edge.destiny);
+                    } else {
+                        edge.status = "CROSSED";
+                    }
 
-                } else {
-                    e.status = "CRUSADE";
                 }
-            }));
+            });
         }
-        console.log(current);
     }
 
     dfs(vertex) {
@@ -71,8 +74,8 @@ class Graph {
 class Vertex {
     constructor(key, viseted = false, level = null, adjacency = []) {
         this.key = key;
-        this.viseted = viseted;
-        this.level = level;
+        this.viseted = false;
+        this.level = null;
         this.adjacency = adjacency;
     }
 
@@ -85,7 +88,9 @@ class Vertex {
         this.adjacency.forEach(edge => list += " ->" + edge.destiny.key);
         console.log(list);
     }
-
+    isVisited() {
+        return (this.level !== null);
+    }
 }
 
 class Edge {
@@ -95,21 +100,38 @@ class Edge {
         this.weight = weight;
         this.status = status;
     }
+    isUnexplored() {
+        return (this.status === "UNEXPLORED");
 
+    }
+
+    hasDestinyVertexBeenVisited() {
+        return this.destiny.isVisited();
+    }
 }
 
 let graph = new Graph();
 let v1 = graph.addVertex('v1');
 let v2 = graph.addVertex('v2');
 let v3 = graph.addVertex('v3');
-let v4 = graph.addVertex('v4)');
+let v4 = graph.addVertex('v4');
 
-let a1 = graph.addEdge(v4, v1);
-let a2 = graph.addEdge(v2, v4);
-let a3 = graph.addEdge(v3, v3);
-let a4 = graph.addEdge(v3, v4);
-//let a5 = graph.addEdge(v5, v3);
+let a1 = graph.addEdge(v1, v2);
+let a2 = graph.addEdge(v2, v3);
+let a3 = graph.addEdge(v1, v3);
+let a4 = graph.addEdge(v2, v4);
+let a5 = graph.addEdge(v1, v4);
 
 //graph.adjacencyList();
 
 graph.bfSearch(v1);
+graph.vertexes.forEach(v => {
+    console.log(`${v.key} | ${v.level}`);
+});
+
+graph.edges.forEach(e => {
+    console.log(`${e.origin.key} - ${e.destiny.key} | ${e.status}`);
+});
+//quer saber como ficou a fila e que retorne vetores por nivel para terça
+
+//aresta v4,v1 sendo exibida ao contrario
