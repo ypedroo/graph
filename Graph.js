@@ -6,6 +6,42 @@ class Graph {
         this.edges = edges;
     }
 
+    getOpen() {
+        let open = this.vertexes.filter(v => {
+            if (v.status == "OPEN") {
+                return v;
+            }
+        });
+        return open;
+    }
+
+    hasOpenVertexes() {
+        return this.getOpen().length > 0;
+
+    }
+
+    shortPath(vertex) {
+        vertex.estimate = 0;
+
+        while (this.hasOpenVertexes()) {
+            let minimum = this.findOpenMinimum();
+            minimum.status = "CLOSED";
+
+            minimum.adjacency.forEach(e => e.relaxation());
+        }
+    }
+
+    findOpenMinimum() {
+        let open = this.getOpen();
+        let minimum = open[0];
+
+        open.forEach(v => {
+            if (v.estimate < minimum.estimate) {
+                minimum = v;
+            }
+        });
+        return minimum;
+    }
     bfSearch(vertex) {
         let current = vertex;
         vertex.level = 0;
@@ -56,13 +92,13 @@ class Graph {
 
 
     }
-    addEdge(origin, destiny) {
-        let nedge = new Edge(origin, destiny);
+    addEdge(origin, destiny, weight) {
+        let nedge = new Edge(origin, destiny, weight);
         this.edges.push(nedge);
         origin.adjacency.push(nedge);
-
+        //adicionar propriedade ou classe do subgrafo q indique se ele e digrafo ou nao
         //cria o destiny quando nao e direcional, ja que a lista fica espelhada
-        let nedge2 = new Edge(origin, destiny);
+        let nedge2 = new Edge(origin, destiny, weight);
         destiny.adjacency.push(nedge2);
         return nedge;
     }
@@ -72,13 +108,21 @@ class Graph {
 }
 
 class Vertex {
-    constructor(key, viseted = false, level = null, adjacency = []) {
+    constructor(key, viseted = false, level = null, adjacency = [],
+        status = "OPEN", estimate = Number.POSITIVE_INFINITY, predecessor = null) {
         this.key = key;
         this.viseted = false;
         this.level = null;
         this.adjacency = adjacency;
+        this.status = status;
+        this.estimate = estimate;
+        this.predecessor = predecessor;
+
     }
 
+    toString() {
+        return this.key;
+    }
 
     adjacencyList() {
         let list = this.key;
@@ -108,27 +152,50 @@ class Edge {
     hasDestinyVertexBeenVisited() {
         return this.destiny.isVisited();
     }
+
+    relaxation() {
+        let newEstimate = this.origin.estimate + this.weight;
+        if (newEstimate < this.destiny.estimate
+            && this.destiny.status == "OPEN") {
+            this.destiny.estimate = newEstimate;
+            this.destiny.predecessor = this.origin;
+        }
+    }
 }
 
 let graph = new Graph();
-let v1 = graph.addVertex('v1');
-let v2 = graph.addVertex('v2');
-let v3 = graph.addVertex('v3');
-let v4 = graph.addVertex('v4');
+let a = graph.addVertex('A');
+let b = graph.addVertex('B');
+let c = graph.addVertex('C');
+let d = graph.addVertex('D');
+let e = graph.addVertex('E');
+let f = graph.addVertex('F');
 
-let a1 = graph.addEdge(v1, v2);
-let a2 = graph.addEdge(v2, v3);
-let a3 = graph.addEdge(v1, v3);
-let a4 = graph.addEdge(v2, v4);
-let a5 = graph.addEdge(v1, v4);
+let ab = graph.addEdge(a, b, 4);
+let ac = graph.addEdge(a, c, 2);
+let bc = graph.addEdge(b, c, 1);
+let bd = graph.addEdge(b, d, 5);
+let ce = graph.addEdge(c, e, 10);
+let cd = graph.addEdge(c, d, 8);
+let de = graph.addEdge(d, e, 2);
+let df = graph.addEdge(d, f, 6);
+let ef = graph.addEdge(e, f, 2);
+
+console.log("Excecutando djikstra");
+graph.shortPath(a);
+graph.vertexes.forEach(v => {
+    console.log(`${v.key}: [${v.predecessor}, ${v.estimate}] `)
+});
+
+
 
 //graph.adjacencyList();
-
-graph.bfSearch(v1);
+console.log("Excecutando Busca em Largura");
+graph.bfSearch(a);
 graph.vertexes.forEach(v => {
     console.log(`${v.key} | ${v.level}`);
 });
-
+console.log("Exibindo o estado das arestas da busca");
 graph.edges.forEach(e => {
     console.log(`${e.origin.key} - ${e.destiny.key} | ${e.status}`);
 });
