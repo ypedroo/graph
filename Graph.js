@@ -132,6 +132,7 @@ graph.vertexes.forEach(v => {
 graph.edges.forEach(e => {
     console.log(`${e.origin.key} - ${e.destiny.key} | ${e.status}`);
 });
+   
 //quer saber como ficou a fila e que retorne vetores por nivel para terça
 
 //aresta v4,v1 sendo exibida ao contrario
