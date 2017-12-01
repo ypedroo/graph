@@ -67,13 +67,12 @@ class Graph {
     }
 
     dfs(vertex) {
-        let v;
-        this.v = vertex;
-        v.vertex.visited = true;
+
+        vertex.visited = true;
         //estrturar cria variavel percursso e dps da seta condicao
-        vertex.ajacency.forEach(edge => {
+        vertex.adjacency.forEach(edge => {
             if (edge.status == "UNEXPLORED") {
-                if (edge.destiny.viseted == false) {
+                if (edge.destiny.visited == false) {
                     edge.status = "DISCOVER";
                     dfs(edge.destiny);
                 } else {
@@ -96,7 +95,7 @@ class Graph {
         let nedge = new Edge(origin, destiny, weight);
         this.edges.push(nedge);
         origin.adjacency.push(nedge);
-        //adicionar propriedade ou classe do subgrafo q indique se ele e digrafo ou nao
+        //adicionar propriedade ou classe do subgrafo q indique se ele e digrafo ou nao**
         //cria o destiny quando nao e direcional, ja que a lista fica espelhada
         let nedge2 = new Edge(origin, destiny, weight);
         destiny.adjacency.push(nedge2);
@@ -155,8 +154,8 @@ class Edge {
 
     relaxation() {
         let newEstimate = this.origin.estimate + this.weight;
-        if (newEstimate < this.destiny.estimate
-            && this.destiny.status == "OPEN") {
+        if (newEstimate < this.destiny.estimate &&
+            this.destiny.status == "OPEN") {
             this.destiny.estimate = newEstimate;
             this.destiny.predecessor = this.origin;
         }
@@ -181,17 +180,20 @@ let de = graph.addEdge(d, e, 2);
 let df = graph.addEdge(d, f, 6);
 let ef = graph.addEdge(e, f, 2);
 
-console.log("Excecutando djikstra");
+console.log("Excecutando ShortPath(Djkistra)");
 graph.shortPath(a);
 graph.vertexes.forEach(v => {
     console.log(`${v.key}: [${v.predecessor}, ${v.estimate}] `)
 });
 
+console.log("Lista de adjacencias")
+graph.adjacencyList();
+
+graph.dfs(a);
 
 
-//graph.adjacencyList();
 console.log("Excecutando Busca em Largura");
-graph.bfSearch(a);
+graph.bfSearch(c);
 graph.vertexes.forEach(v => {
     console.log(`${v.key} | ${v.level}`);
 });
@@ -199,7 +201,3 @@ console.log("Exibindo o estado das arestas da busca");
 graph.edges.forEach(e => {
     console.log(`${e.origin.key} - ${e.destiny.key} | ${e.status}`);
 });
-   
-//quer saber como ficou a fila e que retorne vetores por nivel para terça
-
-//aresta v4,v1 sendo exibida ao contrario
