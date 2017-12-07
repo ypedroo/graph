@@ -1,5 +1,3 @@
-//"./"" indica que arquivos estao no mesmo diretorio
-// push e o metodo do vetor que adiciona dentro do mesmo
 class Graph {
     constructor(vertexes = [], edges = []) {
         this.vertexes = vertexes;
@@ -69,7 +67,6 @@ class Graph {
     dfs(vertex) {
 
         vertex.visited = true;
-        //estrturar cria variavel percursso e dps da seta condicao
         vertex.adjacency.forEach(edge => {
             if (edge.status == "UNEXPLORED") {
                 if (edge.destiny.visited == false) {
@@ -95,8 +92,7 @@ class Graph {
         let nedge = new Edge(origin, destiny, weight);
         this.edges.push(nedge);
         origin.adjacency.push(nedge);
-        //adicionar propriedade ou classe do subgrafo q indique se ele e digrafo ou nao**
-        //cria o destiny quando nao e direcional, ja que a lista fica espelhada
+        //nedge indica que ele nao é digrafo
         let nedge2 = new Edge(origin, destiny, weight);
         destiny.adjacency.push(nedge2);
         return nedge;
@@ -125,9 +121,6 @@ class Vertex {
 
     adjacencyList() {
         let list = this.key;
-        /*for(let i = 0; i<this.adjacency.length;i++){
-            list = list + " ->"+ this.adjacency[i].destiny.key;
-        }*/
         this.adjacency.forEach(edge => list += " ->" + edge.destiny.key);
         console.log(list);
     }
