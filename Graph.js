@@ -65,7 +65,6 @@ class Graph {
     }
 
     dfs(vertex) {
-
         vertex.visited = true;
         vertex.adjacency.forEach(edge => {
             if (edge.status == "UNEXPLORED") {
@@ -173,17 +172,20 @@ let de = graph.addEdge(d, e, 2);
 let df = graph.addEdge(d, f, 6);
 let ef = graph.addEdge(e, f, 2);
 
+
+console.log("Lista de adjacencias")
+graph.adjacencyList();
+
+console.log("Executando busca em produndidade");
+graph.dfs(a);
+graph.edges.forEach (e => 
+    console.log(`${e.origin.key} ->  ${e.destiny.key}  ${e.status}`));
+
 console.log("Excecutando ShortPath(Djkistra)");
 graph.shortPath(a);
 graph.vertexes.forEach(v => {
     console.log(`${v.key}: [${v.predecessor}, ${v.estimate}] `)
 });
-
-console.log("Lista de adjacencias")
-graph.adjacencyList();
-
-graph.dfs(a);
-
 
 console.log("Excecutando Busca em Largura");
 graph.bfSearch(c);
